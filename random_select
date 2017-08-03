@@ -1,3 +1,0 @@
-select 
-*
-from dm_marketing.bc account bc;

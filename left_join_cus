@@ -1,0 +1,15 @@
+		select
+	        c.accountid id_sfdc_account
+	        ,cu.name customer_name
+	        ,upper(replace(nvl(c.name,c.customer_contract_id__c),' ','')) sfdc_canonical_name
+	        ,c.id    id_sfdc_contract
+	        ,c.name    contract_name
+	        ,c.customer_contract_id__c
+	        ,c.startdate sfdc_startdate
+	        ,c.enddate	sfdc_enddate
+	    from
+	        dm_marketing.contract_current 
+	        left join
+	            dm_marketing.customer_current cu
+	        on
+	            cu.id = c.accountid
