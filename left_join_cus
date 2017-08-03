@@ -13,3 +13,28 @@
 	            dm_marketing.customer_current cu
 	        on
 	            cu.id = c.accountid
+    where
+	        date_trunc('quarter',c.startdate) >= '2016-01-01'
+			and date_trunc('month', c.startdate) <= '2017-05-01'
+			and c.name is not null --steelbrick issues?
+			and c.billing_customer_name__c is not null -- steelbrick issues?
+			and c.accountid <> '0011400001qrHSoAAM' -- Norm's steelbrick test account
+	
+				left join
+			        (
+			        select
+			            case
+			                when h.contract_number_modifier is null then upper(replace(h.know_as,' ',''))
+			                else upper(replace(h.know_as,' ','')) + '-' + upper(replace(h.contract_number_modifier,' ',''))
+			            end ebs_canonical_name
+			            ,h.id_ebs_headers h_id_ebs_headers
+			            ,h.start_date h_start_date
+			            ,h.end_date	h_end_date
+			            ,h.date_terminated
+			            ,h.sts_code h_sts_code
+			        from
+			            staging_ebs.ebs_headers_current h 
+				)h
+				on
+				and ebs_c.h_start_date = sfdc_c.sfdc_startdate
+				and ebs_c.h_end_date = sfdc_c.sfdc_enddate
